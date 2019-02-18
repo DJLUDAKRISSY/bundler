@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path("../endpoint_fallback", __FILE__)
 
 Artifice.deactivate

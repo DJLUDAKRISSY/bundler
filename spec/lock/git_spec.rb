@@ -1,16 +1,16 @@
-require "spec_helper"
+# frozen_string_literal: true
 
-describe "bundle lock with git gems" do
+RSpec.describe "bundle lock with git gems" do
   before :each do
     build_git "foo"
 
     install_gemfile <<-G
-      gem 'foo', :git => "#{lib_path('foo-1.0')}"
+      gem 'foo', :git => "#{lib_path("foo-1.0")}"
     G
   end
 
   it "doesn't break right after running lock" do
-    should_be_installed "foo 1.0.0"
+    expect(the_bundle).to include_gems "foo 1.0.0"
   end
 
   it "locks a git source to the current ref" do
@@ -22,14 +22,13 @@ describe "bundle lock with git gems" do
       puts "WIN" unless defined?(FOO_PREV_REF)
     RUBY
 
-    out.should == "WIN"
+    expect(out).to eq("WIN")
   end
 
   it "provides correct #full_gem_path" do
     run <<-RUBY
       puts Bundler.rubygems.find_name('foo').first.full_gem_path
     RUBY
-    out.should == bundle("show foo")
+    expect(out).to eq(bundle("info foo --path"))
   end
-
 end
